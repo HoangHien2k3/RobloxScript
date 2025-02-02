@@ -1,0 +1,139 @@
+local csgt, sf, cleartext_x, fr, tb_1, status_1
+local plrs, alr_c, ck, master_x, stg
+
+csgt = Instance.new("ScreenGui")
+fr = Instance.new("Frame")
+tb_1 = Instance.new("TextBox")
+status_1 = Instance.new("TextLabel")
+
+plrs = game:GetService("Players")
+stg = game:GetService("StarterGui")
+
+csgt.Name = "PX"
+sf = Enum.Font.Code
+cleartext_x = true
+alr_c = false
+ck = false
+
+csgt.Parent = game.CoreGui
+fr.Parent = csgt
+tb_1.Parent = fr
+status_1.Parent = fr
+
+fr.BackgroundColor3 = Color3.new(0, 0, 0)
+fr.BackgroundTransparency = 0.5
+fr.Position = UDim2.new(0.6, 0, 0.4, 0)
+fr.Size = UDim2.new(0.2, 0, 0.2, 0)
+fr.Active = true
+fr.Draggable = true
+fr.Visible = true
+
+tb_1.BackgroundColor3 = Color3.new(0, 0, 0)
+tb_1.BackgroundTransparency = 0.5
+tb_1.Position = UDim2.new(0.1, 0, 0.1, 0)
+tb_1.Size = UDim2.new(0.8, 0, 0.3, 0)
+tb_1.TextScaled = true
+tb_1.TextColor3 = Color3.new(1, 1, 1)
+tb_1.Font = sf
+tb_1.Text = " "
+tb_1.PlaceholderText = "input username"
+tb_1.ClearTextOnFocus = cleartext_x
+tb_1.Visible = true
+
+status_1.BackgroundColor3 = Color3.new(0, 0, 0)
+status_1.BackgroundTransparency = 0.5
+status_1.Position = UDim2.new(0.1, 0, 0.45, 0)
+status_1.Size = UDim2.new(0.1, 0, 0.1, 0)
+status_1.TextScaled = true
+status_1.TextColor3 = Color3.new(1, 1, 1)
+status_1.Font = sf
+status_1.Text = " "
+status_1.Visible = true
+
+function uic(pr, radius)
+    local edge = Instance.new("UICorner")
+    edge.Parent = pr
+    edge.CornerRadius = radius
+end
+
+function ntf(msg)
+    stg:SetCore("SendNotification", {
+        Title = "《Alert》",
+        Text = msg,
+        Duration = 1.5,
+    })
+end
+
+function check()
+    if not ck then
+        ck = true
+        status_1.BackgroundColor3 = Color3.new(0, 1, 0)
+        wait(0.1)
+        status_1.BackgroundColor3 = Color3.new(0, 0, 0)
+        wait(0.05)
+        ck = false
+    end
+end
+
+function Commands_m(str)
+    local ark = string.split(str, " ")
+    
+    if ark[1] == "/reset" then
+        plrs.LocalPlayer.Character.Humanoid.Health = 0
+        ntf("Character Reset !")
+    elseif ark[1] == "/kick" and ark[2] then
+        plrs.LocalPlayer:Kick(ark[2])
+    elseif ark[1] == "/bring" then
+        local master_x1 = tb_1.Text
+        local master_p = plrs and plrs:FindFirstChild(master_x1)
+        if master_p and master_p.Character and master_p.Character:FindFirstChild("HumanoidRootPart") then
+            local master_p1 = master_p.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+            plrs.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(master_p1)
+        end
+    else
+        print("Unknown Commands.")
+    end
+end
+
+function Commands_x(str, player)
+    local wis = string.split(str, " ")
+    
+    if wis[1] == "/Connect" then
+        if not alr_c then
+            local found_master = player.Name
+            print(found_master .. " has Connected!")
+            tb_1.Text = tostring(found_master)
+            master_x = tb_1.Text
+            alr_c = true
+            local c_master = plrs:FindFirstChild(master_x)
+            if c_master then
+                c_master.Chatted:Connect(Commands_m)
+                ntf("Permission Giving to '" .. c_master.Name .. "'")
+            else
+                tb_1.Text = " "
+                alr_c = false
+            end
+        end
+    else
+        check()
+    end
+end
+
+for _, player in ipairs(plrs:GetPlayers()) do
+    player.Chatted:Connect(function(message)
+        Commands_x(message, player)
+    end)
+end
+
+tb_1.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        alr_c = false
+        ntf("Disconnecting to current master '" .. found_master .. "'")
+    end
+end)
+
+uic(fr, UDim.new(0.2, 0))
+uic(tb_1, UDim.new(0.2, 0))
+uic(status_1, UDim.new(0.2, 0))
+
+ntf("Welcome to HoangHien2k3 Script!")
