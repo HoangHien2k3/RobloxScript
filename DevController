@@ -293,7 +293,7 @@ function Commands_x(str, player)
             master_x = tb_1.Text
             c_master = plrs:FindFirstChild(master_x)
             if c_master then
-                master_call : RBXScriptConnection = c_master.Chatted:Connect(Commands_m)
+                master_call = c_master.Chatted:Connect(Commands_m)
                 ntf("Permission Giving to '" .. c_master.Name .. "'")
             else
                 tb_1.Text = ""
