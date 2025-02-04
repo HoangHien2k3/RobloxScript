@@ -273,14 +273,14 @@ function Commands_x(str, player)
     
     if wis[1] == w_code then
         if not alr_c then
+            alr_c = true
+            alr_dc = false
             local found_master = player.Name
             print(found_master .. " has Connected!")
             c_chat("⚠️ [" .. found_master .. "] has Connected!")
             c_chat("to me.")
             tb_1.Text = tostring(found_master)
             master_x = tb_1.Text
-            alr_c = true
-            alr_dc = false
             c_master = plrs:FindFirstChild(master_x)
             if c_master then
                 c_master.Chatted:Connect(Commands_m)
