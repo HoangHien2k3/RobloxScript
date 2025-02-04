@@ -1,4 +1,4 @@
-local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc
+local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, TextChatService, ReplicatedStorage
 local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message
 
 csgt = Instance.new("ScreenGui")
@@ -10,6 +10,10 @@ status_1 = Instance.new("TextLabel")
 plrs = game:GetService("Players")
 stg = game:GetService("StarterGui")
 rs = game:GetService("RunService")
+TextChatService = game:GetService("TextChatService")
+ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+IsLegacyChat_Service = TextChatService.ChatVersion == Enum.ChatVersion.LegacyChatService
 
 csgt.Name = "PX"
 sf = Enum.Font.Code
