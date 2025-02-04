@@ -302,8 +302,6 @@ function Commands_x(str, player)
         end
     elseif table.find(d_tble, wis[1]) then
         if alr_c and not alr_dc then
-            tb_1.Text = ""
-            found_master = ""
             alr_c = false
             alr_dc = true
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
@@ -311,6 +309,8 @@ function Commands_x(str, player)
             c_chat("to me.")
             c_master.Chatted:Disconnect(Commands_m)
             c_master = nil
+            tb_1.Text = ""
+            found_master = ""
         end
     else
         if not check_delay then
