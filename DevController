@@ -89,6 +89,15 @@ function ntf(msg)
     })
 end
 
+function c_chat(str_chat)
+    str_chat = tostring(str_chat)
+    if not IsLegacyChat_Service then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str_chat)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str_chat, "All")
+    end
+end
+
 function check()
     if not ck then
         ck = true
@@ -190,6 +199,7 @@ function Commands_m(str)
     if ark[1] == "/reset" then
         plrs.LocalPlayer.Character.Humanoid.Health = 0
         ntf("Character Reset !")
+        c_chat("Successfully Resetting Character !")
     elseif ark[1] == "/showui" then
         fr.Position = UDim2.new(0.6, 0, 0.4, 0)
         ntf("Controller UI Shown")
@@ -205,6 +215,7 @@ function Commands_m(str)
         local master_p = plrs and plrs:FindFirstChild(master_x1)
         if master_p and master_p.Character and master_p.Character:FindFirstChild("HumanoidRootPart") then
             local master_p1 = master_p.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+            c_chat("/teleport " .. master_x1)
             plrs.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(master_p1)
         end
     elseif ark[1] == "/kill" then
@@ -259,6 +270,8 @@ function Commands_x(str, player)
         if not alr_c then
             local found_master = player.Name
             print(found_master .. " has Connected!")
+            c_chat("⚠️ [" .. found_master .. "] has Connected!")
+            c_chat("to me.")
             tb_1.Text = tostring(found_master)
             master_x = tb_1.Text
             alr_c = true
@@ -278,6 +291,8 @@ function Commands_x(str, player)
             alr_c = false
             alr_dc = true
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
+            c_chat("⚠️ [" .. found_master .. "] has Disconnected!")
+            c_chat("to me.")
         end
     else
         check()
