@@ -178,6 +178,14 @@ end
 
 function Commands_m(str)
     local ark = string.split(str, " ")
+
+    if c_master and c_master.Character and c_master.Character:FindFirstChild("Humanoid") then
+        local humanoid = c_master.Character.Humanoid
+        if humanoid.Health <= 0 then
+            ntf("Cannot execute command, " .. c_master.Name .. " is dead or respawning!")
+            return
+        end
+    end
     
     if ark[1] == "/reset" then
         plrs.LocalPlayer.Character.Humanoid.Health = 0
@@ -191,7 +199,6 @@ function Commands_m(str)
     elseif ark[1] == "/kick" and ark[2] then
         local kick_message = table.concat(ark, " ", 2)
         last_message = kick_message
-        
         plrs.LocalPlayer:Kick(kick_message)
     elseif ark[1] == "/bring" then
         local master_x1 = tb_1.Text
