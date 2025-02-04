@@ -1,5 +1,5 @@
 local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage
-local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message, IsLegacyChat_Service
+local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
 
 csgt = Instance.new("ScreenGui")
 fr = Instance.new("Frame")
@@ -190,6 +190,15 @@ function NearestHRP(position)
     return N_HRP
 end
 
+function check_fm()
+    if found_master then
+        found_master = nil
+        ntf("Removing previous master.")
+    else
+        ntf("New master.")
+    end
+end
+
 function Commands_m(str)
     local ark = string.split(str, " ")
 
@@ -275,7 +284,8 @@ function Commands_x(str, player)
         if not alr_c then
             alr_c = true
             alr_dc = false
-            local found_master = player.Name
+            check_fm()
+            found_master = player.Name
             print(found_master .. " has Connected!")
             c_chat("⚠️ [" .. found_master .. "] has Connected!")
             c_chat("to me.")
@@ -293,10 +303,11 @@ function Commands_x(str, player)
     elseif table.find(d_tble, wis[1]) then
         if alr_c and not alr_dc then
             tb_1.Text = ""
+            found_master = nil
             alr_c = false
             alr_dc = true
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
-            c_chat("⚠️ [" .. found_master .. "] has Disconnected!")
+            c_chat("⚠️ [" .. c_master.Name .. "] has Disconnected!")
             c_chat("to me.")
         end
     else
