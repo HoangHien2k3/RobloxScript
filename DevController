@@ -1,4 +1,4 @@
-local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, TextChatService, ReplicatedStorage
+local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage
 local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message, IsLegacyChat_Service
 
 csgt = Instance.new("ScreenGui")
@@ -23,6 +23,7 @@ alr_c = false
 alr_dc = false
 ck = false
 fix_attemp = false
+check_delay = false
 storage_target = nil
 last_message = nil
 c_master = nil
@@ -299,7 +300,12 @@ function Commands_x(str, player)
             c_chat("to me.")
         end
     else
-        check()
+        if not check_delay then
+            check_delay = true
+            check()
+            task.wait()
+            check_delay = false
+        end
     end
 end
 
