@@ -245,7 +245,7 @@ end
 function Commands_x(str, player)
     local wis = string.split(str, " ")
     c_code = tb_2.Text
-    local w_code = c_code or "/Connect"
+    local w_code = (c_code ~= "" and c_code) or "/Connect"
     
     if wis[1] == w_code then
         if not alr_c then
