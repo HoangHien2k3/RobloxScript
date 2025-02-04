@@ -295,6 +295,14 @@ function Commands_x(str, player)
             if c_master then
                 c_master.Chatted:Connect(Commands_m)
                 ntf("Permission Giving to '" .. c_master.Name .. "'")
+                
+                plrs.PlayerRemoving:Connect(function(playerLeaving)
+                    if playerLeaving == c_master then
+                        ntf("'" .. c_master.Name .. "' has disconnected!")
+                        c_master = nil
+                        alr_c = false
+                    end
+                end)
             else
                 tb_1.Text = ""
                 alr_c = false
@@ -309,7 +317,9 @@ function Commands_x(str, player)
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
             c_chat("⚠️ [" .. c_master.Name .. "] has Disconnected!")
             c_chat("to me.")
-            c_master.Chatted:Disconnect(Commands_m)
+            if c_master then
+                c_master.Chatted:Disconnect(Commands_m)
+            end
             c_master = nil
         end
     else
