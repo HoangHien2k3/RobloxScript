@@ -307,7 +307,7 @@ function Commands_x(str, player)
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
             c_chat("⚠️ [" .. c_master.Name .. "] has Disconnected!")
             c_chat("to me.")
-            c_master.Chatted:Disconnect(Commands_m)
+            c_master.Chatted:Disconnect()
             c_master = nil
             tb_1.Text = ""
             found_master = ""
