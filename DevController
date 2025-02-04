@@ -1,5 +1,5 @@
 local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage
-local plrs, alr_c, ck, master_x, master_call, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
+local plrs, alr_c, ck, looprs, master_x, master_call, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
 
 csgt = Instance.new("ScreenGui")
 fr = Instance.new("Frame")
@@ -24,6 +24,7 @@ alr_dc = false
 ck = false
 fix_attemp = false
 check_delay = false
+looprs = false
 storage_target = nil
 last_message = nil
 c_master = nil
@@ -205,6 +206,7 @@ function Commands_m(str)
     if c_master and c_master.Character and c_master.Character:FindFirstChild("Humanoid") then
         local humanoid = c_master.Character.Humanoid
         if humanoid.Health <= 0 then
+            looprs = false
             ntf("Cannot execute command, " .. c_master.Name .. " is dead or respawning!")
             return
         end
@@ -284,6 +286,7 @@ function Commands_x(str, player)
         if not alr_c then
             alr_c = true
             alr_dc = false
+            looprs = true
             check_fm()
             found_master = player.Name
             print(found_master .. " has Connected!")
@@ -304,6 +307,7 @@ function Commands_x(str, player)
         if alr_c and not alr_dc then
             alr_c = false
             alr_dc = true
+            looprs = false
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
             c_chat("⚠️ [" .. c_master.Name .. "] has Disconnected!")
             c_chat("to me.")
@@ -326,10 +330,12 @@ function Commands_x(str, player)
 end
 
 rs.RenderStepped:Connect(function()
-    for _, player in ipairs(plrs:GetPlayers()) do
-        player.Chatted:Connect(function(message)
-            Commands_x(message, player)
-        end)
+    if not looprs then
+        for _, player in ipairs(plrs:GetPlayers()) do
+            player.Chatted:Connect(function(message)
+                Commands_x(message, player)
+            end)
+        end
     end
 end)
 
