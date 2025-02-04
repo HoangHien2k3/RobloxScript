@@ -1,5 +1,5 @@
 local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage
-local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
+local plrs, alr_c, ck, master_x, master_call, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
 
 csgt = Instance.new("ScreenGui")
 fr = Instance.new("Frame")
@@ -293,7 +293,7 @@ function Commands_x(str, player)
             master_x = tb_1.Text
             c_master = plrs:FindFirstChild(master_x)
             if c_master then
-                c_master.Chatted:Connect(Commands_m)
+                master_call : RBXScriptConnection = c_master.Chatted:Connect(Commands_m)
                 ntf("Permission Giving to '" .. c_master.Name .. "'")
             else
                 tb_1.Text = ""
@@ -307,7 +307,7 @@ function Commands_x(str, player)
             ntf("Removing Permission from: '" .. c_master.Name .. "'")
             c_chat("⚠️ [" .. c_master.Name .. "] has Disconnected!")
             c_chat("to me.")
-            c_master.Chatted:Disconnect()
+            master_call:Disconnect()
             c_master = nil
             tb_1.Text = ""
             found_master = ""
