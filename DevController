@@ -1,4 +1,4 @@
-local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid
+local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc
 local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message
 
 csgt = Instance.new("ScreenGui")
@@ -16,6 +16,7 @@ sf = Enum.Font.Code
 cleartext_z = false
 cleartext_x = true
 alr_c = false
+alr_dc = false
 ck = false
 fix_attemp = false
 storage_target = nil
@@ -254,6 +255,7 @@ function Commands_x(str, player)
             tb_1.Text = tostring(found_master)
             master_x = tb_1.Text
             alr_c = true
+            alr_dc = false
             c_master = plrs:FindFirstChild(master_x)
             if c_master then
                 c_master.Chatted:Connect(Commands_m)
@@ -264,9 +266,12 @@ function Commands_x(str, player)
             end
         end
     elseif table.find(d_tble, wis[1]) then
-        tb_1.Text = ""
-        alr_c = false
-        ntf("Removing Permission from: '" .. c_master.Name .. "'")
+        if alr_c and not alr_dc then
+            tb_1.Text = ""
+            alr_c = false
+            alr_dc = true
+            ntf("Removing Permission from: '" .. c_master.Name .. "'")
+        end
     else
         check()
     end
