@@ -1,5 +1,5 @@
 local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, TextChatService, ReplicatedStorage
-local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message
+local plrs, alr_c, ck, master_x, stg, rs, storage_target, c_master, c_code, d_tble, last_message, IsLegacyChat_Service
 
 csgt = Instance.new("ScreenGui")
 fr = Instance.new("Frame")
