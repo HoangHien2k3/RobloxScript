@@ -59,7 +59,7 @@ tb_1.Visible = true
 
 tb_2.BackgroundColor3 = Color3.new(0, 0, 0)
 tb_2.BackgroundTransparency = 0.5
-tb_2.Position = UDim2.new(0.2, 0, 0.45, 0)
+tb_2.Position = UDim2.new(0.25, 0, 0.45, 0)
 tb_2.Size = UDim2.new(0.4, 0, 0.25, 0)
 tb_2.TextScaled = true
 tb_2.TextColor3 = Color3.new(0, 1, 0)
