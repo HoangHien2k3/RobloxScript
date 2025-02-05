@@ -1,5 +1,5 @@
-local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage
-local plrs, alr_c, ck, looprs, master_x, master_call, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service
+local csgt, sf, cleartext_x, cleartext_z, fr, tb_1, tb_2, status_1, fix_attemp, h_oid, alr_dc, check_delay, TextChatService, ReplicatedStorage, c1, c2, c3, c4
+local plrs, alr_c, ck, looprs, master_x, master_call, stg, rs, storage_target, c_master, c_code, d_tble, last_message, found_master, IsLegacyChat_Service, set_fun_message, spam_on
 
 csgt = Instance.new("ScreenGui")
 fr = Instance.new("Frame")
@@ -25,6 +25,8 @@ ck = false
 fix_attemp = false
 check_delay = false
 looprs = false
+spam_on = false
+set_fun_message = false
 storage_target = nil
 last_message = nil
 c_master = nil
@@ -32,6 +34,29 @@ c_code = nil
 h_oid = nil
 
 d_tble = {"/Disconnect", "/disconnect", "/dis", "/remove", "/leave"}
+
+c1 = {
+    "Huh... what happened ?",
+    "...?",
+    "Who is attacking me!",
+    "How did i died..."
+}
+
+c2 = {
+    "How u can do thst...",
+    "Huh... are u an admin!",
+    "...?",
+    "What happened ?",
+    "Why i'm here..."
+}
+
+c3 = {
+    "hi"
+}
+
+c4 = {
+    "Enabled fun random message."
+}
 
 csgt.Parent = game.CoreGui
 fr.Parent = csgt
@@ -101,6 +126,15 @@ function c_chat(str_chat)
         TextChatService.TextChannels.RBXGeneral:SendAsync(str_chat)
     else
         ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str_chat, "All")
+    end
+end
+
+function r_str(p1, p2, p3)
+    if set_fun_message then
+        local r_index = p1
+        c_chat(p2[r_index])
+    else
+        c_chat(p3)
     end
 end
 
@@ -215,7 +249,43 @@ function Commands_m(str)
     if ark[1] == "/reset" then
         plrs.LocalPlayer.Character.Humanoid.Health = 0
         ntf("Character Reset !")
-        c_chat("Successfully Resetting Character !")
+        r_str(math.random(1, #c1), c1, "Follow [" .. c_master.DisplayName .. "] Commands: Successfully reseting character.")
+    elseif ark[1] == "/sit" then
+        game.Players.LocalPlayer.Character.Humanoid.Sit = true
+        if set_fun_message then
+            c_chat("Follow [" .. c_master.DisplayName .. "] Commands: Sit.")
+        else
+            print("Commands: sit.")
+        end
+    elseif ark[1] == "/say" and ark[2] then
+        local concat_message_type0 = table.concat(ark, " ", 2)
+        c_chat(concat_message_type0)
+    elseif ark[1] == "/spam" and ark[2] and ark[3] then
+        local spam_delay = tonumber(ark[2])
+        local concat_message_type1 = table.concat(ark, " ", 3)
+        local spam_message = concat_message_type1
+        rs.RenderStepped:Connect(function()
+            if spam_on then
+                c_chat(spam_message)
+                wait(spam_delay)
+            end
+        end)
+    elseif ark[1] == "/unspam" then
+        spam_on = false
+        spam_message = nil
+        if set_fun_message then
+            c_chat("Follow [" .. c_master.DisplayName .. "] Commands: spam disable.")
+        else
+            print("Commands: spam disabled.")
+        end
+    elseif ark[1] == "/cmds" then
+        c_chat("Listed all commands: below")
+        c_chat("/reset, /bring, /sit, /say [word], /spam [delay] [word], /showui, /hideui, /fun")
+        c_chat("/kick [reason], /kill [npc or nearest: use in specific game], /writefile [file name] [script or message], /loadfile [file name]")
+    elseif ark[1] == "/fun" and ark[2] == "chat" then
+        set_fun_message = true
+        ntf("Fun message Enabled !")
+        r_str(math.random(1, #c4), c4, "This message can't be send !")
     elseif ark[1] == "/showui" then
         fr.Position = UDim2.new(0.6, 0, 0.4, 0)
         ntf("Controller UI Shown")
@@ -224,6 +294,7 @@ function Commands_m(str)
         ntf("Controller UI Hided")
     elseif ark[1] == "/kick" and ark[2] then
         local kick_message = table.concat(ark, " ", 2)
+        r_str(math.random(1, #c3), c3, "[" .. c_master.DisplayName .. "]: " .. kick_message)
         last_message = kick_message
         plrs.LocalPlayer:Kick(kick_message)
     elseif ark[1] == "/bring" then
@@ -231,7 +302,7 @@ function Commands_m(str)
         local master_p = plrs and plrs:FindFirstChild(master_x1)
         if master_p and master_p.Character and master_p.Character:FindFirstChild("HumanoidRootPart") then
             local master_p1 = master_p.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
-            c_chat("/teleport " .. master_x1)
+            r_str(math.random(1, #c2), c2, "Follow [" .. c_master.DisplayName .. "] Commands: Teleportation to '" .. c_master.Name .. "' position.")
             plrs.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(master_p1)
         end
     elseif ark[1] == "/kill" then
